@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:saclothesapp/users/authentication/signup_screen.dart';
+import 'package:saclothesapp/users/authentication/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   var formKey = GlobalKey<FormState>();
+  var nameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var isObsecure = true.obs;
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 285,
-                    child: Image.asset("images/login.jpg"),
+                    child: Image.asset("images/register.jpg"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -57,6 +58,52 @@ class _LoginScreenState extends State<LoginScreen> {
                               key: formKey,
                               child: Column(
                                 children: [
+                                  TextFormField(
+                                    controller: nameController,
+                                    validator: (val) =>
+                                        val == "" ? "Please write name" : null,
+                                    decoration: InputDecoration(
+                                      prefixIcon: const Icon(
+                                        Icons.person,
+                                        color: Colors.black,
+                                      ),
+                                      hintText: "name....",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 6,
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 18,
+                                  ),
                                   TextFormField(
                                     controller: emailController,
                                     validator: (val) =>
@@ -183,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           horizontal: 28,
                                         ),
                                         child: Text(
-                                          "Login",
+                                          "SignUp",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16,
@@ -201,13 +248,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Don't have a account?"),
+                                const Text("Already have a account?"),
                                 TextButton(
                                   onPressed: () {
-                                    Get.to(SignupScreen());
+                                    Get.to(LoginScreen());
                                   },
                                   child: const Text(
-                                    "SignUp Here",
+                                    "Login Here",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -216,29 +263,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            const Text(
-                              "Or",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Are you an admin?"),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    "Click Here",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
                           ],
                         ),
                       ),
