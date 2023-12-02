@@ -7,7 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:saclothesapp/api_connection/api_connection.dart';
 
 import 'package:saclothesapp/users/authentication/signup_screen.dart';
+import 'package:saclothesapp/users/fragments/dashboard_of_fragments.dart';
 import 'package:saclothesapp/users/model/user.dart';
+import 'package:saclothesapp/users/userPreferences/user_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,12 +39,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (resBodyOfLogin["success"] == true) {
           Fluttertoast.showToast(msg: "You are logged-in successfully");
+
+          User userInfo = User.fromJson(resBodyOfLogin["userData"]);
+          await RememberUserPrefs.saveRememberUser(userInfo);
+
+          Future.delayed(Duration(milliseconds: 2000), () {
+            Get.to(DashboardOfFragments());
+          });
         } else {
           Fluttertoast.showToast(
               msg:
                   "Incorrect credential\n Please write correct email or password and try again");
-
-          User userInfo = User.fromJson(resBodyOfLogin["userData"]);
         }
       }
     } catch (e) {
@@ -212,7 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(30),
                                     child: InkWell(
                                       onTap: () {
-                                        loginUserNow();
+                                        if (formKey.currentState!.validate()) {
+                                          loginUserNow();
+                                        }
                                       },
                                       borderRadius: BorderRadius.circular(30),
                                       child: const Padding(
