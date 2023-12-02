@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:saclothesapp/api_connection/api_connection.dart';
+
 import 'package:saclothesapp/users/authentication/signup_screen.dart';
+import 'package:saclothesapp/users/model/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +21,35 @@ class _LoginScreenState extends State<LoginScreen> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var isObsecure = true.obs;
+
+  loginUserNow() async {
+    try {
+      var res = await http.post(
+        Uri.parse(API.login),
+        body: {
+          "user_email": emailController.text.trim(),
+          "user_password": passwordController.text.trim(),
+        },
+      );
+
+      if (res.statusCode == 200) {
+        var resBodyOfLogin = jsonDecode(res.body);
+
+        if (resBodyOfLogin["success"] == true) {
+          Fluttertoast.showToast(msg: "You are logged-in successfully");
+        } else {
+          Fluttertoast.showToast(
+              msg:
+                  "Incorrect credential\n Please write correct email or password and try again");
+
+          User userInfo = User.fromJson(resBodyOfLogin["userData"]);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: Colors.black,
                                     borderRadius: BorderRadius.circular(30),
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        loginUserNow();
+                                      },
                                       borderRadius: BorderRadius.circular(30),
                                       child: const Padding(
                                         padding: EdgeInsets.symmetric(
