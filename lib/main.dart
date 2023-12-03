@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:saclothesapp/users/authentication/login_screen.dart';
+import 'package:saclothesapp/users/fragments/dashboard_of_fragments.dart';
+import 'package:saclothesapp/users/userPreferences/user_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,10 +23,14 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: FutureBuilder(
+          future: RememberUserPrefs.readUserInfo(),
           builder: (context, snapshot) {
-            return LoginScreen();
+            if (snapshot.data == null) {
+              return LoginScreen();
+            } else {
+              return DashboardOfFragments();
+            }
           },
-          future: null,
         ));
   }
 }
