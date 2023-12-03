@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:saclothesapp/users/userPreferences/current_user.dart';
 
 class ProfileFragmentScreen extends StatelessWidget {
   const ProfileFragmentScreen({super.key});
@@ -36,6 +38,8 @@ class ProfileFragmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CurrentUser _currentUser = Get.put(CurrentUser());
+
     return ListView(
       padding: EdgeInsets.all(32),
       children: [
@@ -48,11 +52,11 @@ class ProfileFragmentScreen extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        userInfoItemProfile(Icons.person, "user name"),
+        userInfoItemProfile(Icons.person, _currentUser.user.user_name),
         const SizedBox(
           height: 20,
         ),
-        userInfoItemProfile(Icons.email, "user@gmail.com"),
+        userInfoItemProfile(Icons.email, _currentUser.user.user_email),
         const SizedBox(
           height: 20,
         ),
