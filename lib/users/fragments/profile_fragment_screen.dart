@@ -1,9 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saclothesapp/users/authentication/login_screen.dart';
 import 'package:saclothesapp/users/userPreferences/current_user.dart';
+import 'package:saclothesapp/users/userPreferences/user_preferences.dart';
 
 class ProfileFragmentScreen extends StatelessWidget {
-  const ProfileFragmentScreen({super.key});
+  final CurrentUser _currentUser = Get.put(CurrentUser());
+
+  signOutUser() async {
+    var resultResponse = await Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.grey,
+        title: const Text(
+          "Logout",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          "Are you sure\nyou want to logout from app?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text(
+              "No",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back(result: "loggedOut");
+            },
+            child: const Text(
+              "Yes",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (resultResponse == 'loggedOut') {
+      RememberUserPrefs.removeUserInfo().then(
+        (value) => Get.off(
+          LoginScreen(),
+        ),
+      );
+    }
+  }
 
   Widget userInfoItemProfile(IconData iconData, String userData) {
     return Container(
@@ -38,8 +90,6 @@ class ProfileFragmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CurrentUser _currentUser = Get.put(CurrentUser());
-
     return ListView(
       padding: EdgeInsets.all(32),
       children: [
@@ -65,7 +115,9 @@ class ProfileFragmentScreen extends StatelessWidget {
             color: Colors.redAccent,
             borderRadius: BorderRadius.circular(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                signOutUser();
+              },
               borderRadius: BorderRadius.circular(32),
               child: const Padding(
                 padding: EdgeInsets.symmetric(
