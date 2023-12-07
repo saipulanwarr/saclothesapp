@@ -29,10 +29,10 @@ class _AdminLoginState extends State<AdminLogin> {
   loginAdminNow() async {
     try {
       var res = await http.post(
-        Uri.parse(API.login),
+        Uri.parse(API.adminLogin),
         body: {
-          "user_email": emailController.text.trim(),
-          "user_password": passwordController.text.trim(),
+          "admin_email": emailController.text.trim(),
+          "admin_password": passwordController.text.trim(),
         },
       );
 
@@ -40,7 +40,8 @@ class _AdminLoginState extends State<AdminLogin> {
         var resBodyOfLogin = jsonDecode(res.body);
 
         if (resBodyOfLogin["success"] == true) {
-          Fluttertoast.showToast(msg: "You are logged-in successfully");
+          Fluttertoast.showToast(
+              msg: "Dear Admin, You are logged-in successfully");
 
           Future.delayed(Duration(milliseconds: 2000), () {
             Get.to(AdminUploadItems());
