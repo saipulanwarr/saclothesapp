@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AdminUploadItems extends StatefulWidget {
@@ -18,12 +19,20 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
     pickedImageFile = await _picker.pickImage(source: ImageSource.camera);
 
     Get.back();
+
+    setState(() {
+      pickedImageFile;
+    });
   }
 
   pickImageFromPhoneGallery() async {
     pickedImageFile = await _picker.pickImage(source: ImageSource.gallery);
 
     Get.back();
+
+    setState(() {
+      pickedImageFile;
+    });
   }
 
   showDialogBoxForImagePickimgAndCapturing() {
@@ -76,6 +85,30 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
           ],
         );
       },
+    );
+  }
+
+  Widget uploadItemFormScreen() {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: ListView(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.8,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(
+                  File(
+                    pickedImageFile!.path,
+                  ),
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -151,6 +184,6 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
 
   @override
   Widget build(BuildContext context) {
-    return defaultScreen();
+    return pickedImageFile == null ? defaultScreen() : uploadItemFormScreen();
   }
 }
