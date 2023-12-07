@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AdminUploadItems extends StatefulWidget {
   const AdminUploadItems({super.key});
@@ -10,6 +11,21 @@ class AdminUploadItems extends StatefulWidget {
 }
 
 class _AdminUploadItemsState extends State<AdminUploadItems> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? pickedImageFile;
+
+  captureImageWithPhoneCamera() async {
+    pickedImageFile = await _picker.pickImage(source: ImageSource.camera);
+
+    Get.back();
+  }
+
+  pickImageFromPhoneGallery() async {
+    pickedImageFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    Get.back();
+  }
+
   showDialogBoxForImagePickimgAndCapturing() {
     return showDialog(
       context: context,
@@ -25,7 +41,9 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
           ),
           children: [
             SimpleDialogOption(
-              onPressed: () {},
+              onPressed: () {
+                captureImageWithPhoneCamera();
+              },
               child: Text(
                 "Capture with Phone Camera",
                 style: TextStyle(
@@ -34,7 +52,9 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
               ),
             ),
             SimpleDialogOption(
-              onPressed: () {},
+              onPressed: () {
+                pickImageFromPhoneGallery();
+              },
               child: Text(
                 "Pick Image from phone gallery",
                 style: TextStyle(
