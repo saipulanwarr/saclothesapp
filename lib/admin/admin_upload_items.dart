@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:saclothesapp/admin/admin_login.dart';
 
 class AdminUploadItems extends StatefulWidget {
   const AdminUploadItems({super.key});
@@ -101,6 +102,42 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
   Widget uploadItemFormScreen() {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black54,
+                Colors.deepPurple,
+              ],
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        title: const Text("Upload Form"),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Get.to(AdminLogin());
+          },
+          icon: Icon(
+            Icons.clear,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.to(AdminLogin());
+            },
+            child: Text(
+              "Done",
+              style: TextStyle(
+                color: Colors.green,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           Container(
