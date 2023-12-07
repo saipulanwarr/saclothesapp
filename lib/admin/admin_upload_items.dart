@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 class AdminUploadItems extends StatefulWidget {
   const AdminUploadItems({super.key});
@@ -8,6 +10,55 @@ class AdminUploadItems extends StatefulWidget {
 }
 
 class _AdminUploadItemsState extends State<AdminUploadItems> {
+  showDialogBoxForImagePickimgAndCapturing() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          backgroundColor: Colors.black,
+          title: Text(
+            "Item Image",
+            style: TextStyle(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {},
+              child: Text(
+                "Capture with Phone Camera",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {},
+              child: Text(
+                "Pick Image from phone gallery",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   Widget defaultScreen() {
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +103,9 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
                 color: Colors.black38,
                 borderRadius: BorderRadius.circular(30),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialogBoxForImagePickimgAndCapturing();
+                  },
                   borderRadius: BorderRadius.circular(30),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
