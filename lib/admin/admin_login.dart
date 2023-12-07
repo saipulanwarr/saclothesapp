@@ -4,28 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:saclothesapp/admin/admin_login.dart';
+import 'package:saclothesapp/admin/admin_upload_items.dart';
 import 'package:saclothesapp/api_connection/api_connection.dart';
+import 'package:saclothesapp/users/authentication/login_screen.dart';
 
 import 'package:saclothesapp/users/authentication/signup_screen.dart';
 import 'package:saclothesapp/users/fragments/dashboard_of_fragments.dart';
 import 'package:saclothesapp/users/model/user.dart';
 import 'package:saclothesapp/users/userPreferences/user_preferences.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class AdminLogin extends StatefulWidget {
+  const AdminLogin({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<AdminLogin> createState() => _AdminLoginState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _AdminLoginState extends State<AdminLogin> {
   var formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var isObsecure = true.obs;
 
-  loginUserNow() async {
+  loginAdminNow() async {
     try {
       var res = await http.post(
         Uri.parse(API.login),
@@ -41,11 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
         if (resBodyOfLogin["success"] == true) {
           Fluttertoast.showToast(msg: "You are logged-in successfully");
 
-          User userInfo = User.fromJson(resBodyOfLogin["userData"]);
-          await RememberUserPrefs.storeUserInfo(userInfo);
-
           Future.delayed(Duration(milliseconds: 2000), () {
-            Get.to(DashboardOfFragments());
+            Get.to(AdminUploadItems());
           });
         } else {
           Fluttertoast.showToast(
@@ -75,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 285,
-                    child: Image.asset("images/login.jpg"),
+                    child: Image.asset("images/admin.jpg"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -221,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: InkWell(
                                       onTap: () {
                                         if (formKey.currentState!.validate()) {
-                                          loginUserNow();
+                                          loginAdminNow();
                                         }
                                       },
                                       borderRadius: BorderRadius.circular(30),
@@ -249,13 +247,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Don't have a account?"),
+                                const Text("I am not an admin"),
                                 TextButton(
                                   onPressed: () {
-                                    Get.to(SignupScreen());
+                                    Get.to(LoginScreen());
                                   },
                                   child: const Text(
-                                    "SignUp Here",
+                                    "Login Here",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -264,31 +262,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            const Text(
-                              "Or",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Are you an admin?"),
-                                TextButton(
-                                  onPressed: () {
-                                    Get.to(AdminLogin());
-                                  },
-                                  child: const Text(
-                                    "Click Here",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
                           ],
                         ),
                       ),
